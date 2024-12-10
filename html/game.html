@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bouncing Ball</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        canvas {
+            background-color: #ffffff;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bounceCanvas" width="500" height="500"></canvas>
+
+    <script>
+        const canvas = document.getElementById('bounceCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let ball = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            radius: 20,
+            dx: 2, // horizontal speed
+            dy: 2, // vertical speed
+            color: 'red'
+        };
+
+        // Function to generate random speed
+        function randomSpeed() {
+            return Math.random() * 4 + 1;  // Random speed between 1 and 5
+        }
+
+        // Function to draw the ball
+        function drawBall() {
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+            ctx.fillStyle = ball.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        // Function to update ball position and handle bouncing
+        function updateBall() {
+            // Update position based on speed
+            ball.x += ball.dx;
+            ball.y += ball.dy;
+
+            // Randomize velocity on bounce
+            if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
+                ball.dx = -randomSpeed();  // Reverse direction and add randomness
+            }
+
+            if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
+                ball.dy = -randomSpeed();  // Reverse direction and add randomness
+            }
+        }
+
+        // Function to animate the ball
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);  // Clear canvas
+            drawBall();
+            updateBall();
+            requestAnimationFrame(animate);  // Repeat animation
+        }
+
+        animate();
+    </script>
+</body>
+</html>
